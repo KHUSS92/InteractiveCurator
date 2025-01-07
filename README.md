@@ -4,34 +4,40 @@ The Interactive Game Curator is a web application designed to provide personaliz
 
 Features:
 
-    Backend:
-        Built with ASP.NET Core Web API.
-        Uses Neo4j as a graph database to model and query game relationships.
-        Integrates with the Steam API to fetch game details.
+Backend:
 
-    Frontend (Planned):
-        Built with React.
-        Interactive and responsive user interface.
-        Animated transitions using Framer Motion or React Spring.
+    Built with ASP.NET Core Web API.
+    Uses Neo4j as a graph database to model and query game relationships.
+    Integrates with the Steam API to fetch game details.
 
-    Recommendations Engine:
-        Analyzes relationships between games stored in Neo4j (e.g., "users who played this also played that").
-        Provides curated lists of related games.
+Frontend (Planned):
+
+    Built with React.
+    Interactive and responsive user interface.
+    Animated transitions using Framer Motion or React Spring.
+
+Recommendations Engine:
+
+    Analyzes relationships between games stored in Neo4j (e.g., "users who played this also played that").
+    Provides curated lists of related games.
 
 Technologies Used
 
-    Backend:
+Backend:
+    
         ASP.NET Core Web API
         Neo4j (graph database)
         Serilog (structured logging)
         NUnit and NSubstitute (unit testing)
 
-    Frontend (Planned):
+Frontend (Planned):
+
         React
         Axios (for API calls)
         SCSS (for styling)
 
-    Tools and Deployment:
+Tools and Deployment:
+
         GitHub Actions (for CI/CD pipeline)
         AWS S3 (for frontend hosting)
         Docker (optional for containerization)
@@ -56,11 +62,11 @@ Backend Setup
         "ApiKey": "your_steam_api_key"
     }
     
-    Run the application:
+ Run the application:
     
     dotnet run
 
-    Access the API documentation via Swagger:
+Access the API documentation via Swagger:
 
     http://localhost:<port>/swagger
 

@@ -1,0 +1,6 @@
+@InteractiveCurator.WebAPI_HostAddress = http://localhost:5274
+
+GET {{InteractiveCurator.WebAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

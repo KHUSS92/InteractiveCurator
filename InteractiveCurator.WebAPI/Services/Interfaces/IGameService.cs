@@ -1,11 +1,12 @@
-﻿using InteractiveCurator.WebAPI.DTOs;
+﻿using InteractiveCurator.WebAPI.Models;
 
 namespace InteractiveCurator.WebAPI.Services.Interfaces
 {
     public interface IGameService
     {
-        Task<List<GameDto>> CurateGamesAsync(List<string> games);
-        Task<GameDto> GetGameDetailsAsync(string gameId);
+        Task ImportTopSellingGamesAsync();
+        Task<Game> GetOrFetchGameAsync(string appId);
+        Task<List<Game>> GetRecommendationsAsync(string appId);
     }
 }
 

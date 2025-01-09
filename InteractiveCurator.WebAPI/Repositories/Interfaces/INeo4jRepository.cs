@@ -1,12 +1,12 @@
 ﻿using InteractiveCurator.WebAPI.DTOs;
 using InteractiveCurator.WebAPI.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace InteractiveCurator.WebAPI.Repositories
 {
     public interface INeo4jRepository
     {
-        Task<List<Game>> GetRecommendedGamesAsync(List<Game> games);
+        Task AddGameAsync(Game game);
+        Task<Game?> GetGameByAppIdAsync(string appId);
+        Task<List<Game>> GetRecommendationsForGameAsync(Game game);
     }
 }

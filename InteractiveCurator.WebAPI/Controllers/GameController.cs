@@ -1,58 +1,48 @@
-﻿using InteractiveCurator.WebAPI.DTOs;
+﻿using Microsoft.AspNetCore.Mvc;
 using InteractiveCurator.WebAPI.Services.Interfaces;
-using Microsoft.AspNetCore.Mvc;
 
 namespace InteractiveCurator.WebAPI.Controllers
 {
-    public class GameController
+    [ApiController]
+    [Route("api/games")]
+    public class GamesController : ControllerBase
     {
-        [ApiController]
-        [Route("api/[controller]")]
-        public class GamesController : ControllerBase
+        private readonly IGameService _gameService;
+
+        public GamesController(IGameService gameService)
         {
-            private readonly IGameService _gameService;
+            _gameService = gameService;
+        }
 
-            public GamesController(IGameService gameService)
+        [HttpPost("import-top-selling")]
+        public async Task<IActionResult> ImportTopSellingGames()
+        {
+            await _gameService.ImportTopSellingGamesAsync();
+            return Ok("Top-selling games imported successfully.");
+        }
+
+        [HttpGet("{appId}")]
+        public async Task<IActionResult> GetGameDetails(string appId)
+        {
+            var game = await _gameService.GetOrFetchGameAsync(appId);
+            if (game == null)
             {
-                _gameService = gameService;
+                return NotFound($"No details found for game with App ID: {appId}");
             }
 
-            [HttpPost("curate")]
-            public async Task<IActionResult> CurateGames([FromBody] CurateGamesRequestDto input)
-            {
-                if (input == null || input.Games == null || !input.Games.Any())
-                    return BadRequest("The input list of games cannot be empty.");
+            return Ok(game);
+        }
 
-                try
-                {
-                    var recommendations = await _gameService.CurateGamesAsync(input.Games);
-                    return Ok(recommendations);
-                }
-                catch (Exception ex)
-                {
-                    return StatusCode(500, $"Internal server error: {ex.Message}");
-                }
+        [HttpGet("{appId}/recommendations")]
+        public async Task<IActionResult> GetRecommendations(string appId)
+        {
+            var recommendations = await _gameService.GetRecommendationsAsync(appId);
+            if (recommendations == null || recommendations.Count == 0)
+            {
+                return NotFound($"No recommendations found for game with App ID: {appId}");
             }
 
-            [HttpGet("{gameId}")]
-            public async Task<IActionResult> GetGameDetails(string gameId)
-            {
-                if (string.IsNullOrEmpty(gameId))
-                    return BadRequest("Game ID cannot be null or empty.");
-
-                try
-                {
-                    var gameDetails = await _gameService.GetGameDetailsAsync(gameId);
-                    if (gameDetails == null)
-                        return NotFound($"No details found for game ID: {gameId}");
-
-                    return Ok(gameDetails);
-                }
-                catch (Exception ex)
-                {
-                    return StatusCode(500, $"Internal server error: {ex.Message}");
-                }
-            }
+            return Ok(recommendations);
         }
     }
 }

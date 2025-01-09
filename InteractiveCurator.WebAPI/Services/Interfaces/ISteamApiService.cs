@@ -1,9 +1,10 @@
-﻿using InteractiveCurator.WebAPI.DTOs;
+﻿using InteractiveCurator.WebAPI.Models;
 
 namespace InteractiveCurator.WebAPI.Services
 {
     public interface ISteamApiService
     {
-        Task<GameDto> GetGameDetailsAsync(string gameId);
+        Task<List<Game>> GetTopSellingGamesAsync(int limit);
+        Task<Game> GetGameDetailsAsync(string appId);
     }
 }

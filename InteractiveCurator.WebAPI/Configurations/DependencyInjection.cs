@@ -1,7 +1,6 @@
 ﻿using InteractiveCurator.WebAPI.Repositories;
 using InteractiveCurator.WebAPI.Services;
 using InteractiveCurator.WebAPI.Services.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
 using Neo4j.Driver;
 
 namespace InteractiveCurator.WebAPI.Configurations

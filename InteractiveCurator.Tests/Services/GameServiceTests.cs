@@ -15,7 +15,7 @@ namespace InteractiveCurator.Tests.Services
     {
         private IGameService _gameService;
         private INeo4jRepository _neo4jRepository;
-        private ISteamApiService _steamApiService;
+        private ISteamService _steamApiService;
         private ILogger<GameService> _logger;
 
         [SetUp]
@@ -23,7 +23,7 @@ namespace InteractiveCurator.Tests.Services
         {
             _logger = Substitute.For<ILogger<GameService>>();
             _neo4jRepository = Substitute.For<INeo4jRepository>();
-            _steamApiService = Substitute.For<ISteamApiService>();
+            _steamApiService = Substitute.For<ISteamService>();
             _gameService = new GameService(_logger, _neo4jRepository, _steamApiService);
         }
 

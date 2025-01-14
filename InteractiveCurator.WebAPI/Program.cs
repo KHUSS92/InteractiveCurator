@@ -1,38 +1,30 @@
 using InteractiveCurator.WebAPI.Configurations;
+using InteractiveCurator.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add project-specific services and configurations
+builder.Services.AddProjectServices(builder.Configuration);
+
+// Add controllers
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
+
+// Add Swagger
 builder.Services.AddSwaggerGen();
-
-// Add custom services and configurations
-builder.Services.AddCustomServices(builder.Configuration);
-
-builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Enable Swagger middleware
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Steam App Data Collector API v1");
+        c.RoutePrefix = string.Empty; // Makes Swagger available at the root
+    });
 }
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
-
-app.UseHttpsRedirection();
 
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

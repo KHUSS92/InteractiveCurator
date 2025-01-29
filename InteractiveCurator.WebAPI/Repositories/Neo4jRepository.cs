@@ -38,4 +38,62 @@ public class Neo4jRepository : INeo4jRepository
             genres = app.Genres
         });
     }
+
+    public async Task<List<GenreWithApps>> GetAllGenresAsync()
+    {
+        var genresWithApps = new List<GenreWithApps>();
+
+        var query = @"
+            MATCH (g:Genre)<-[:HAS_GENRE]-(a:App)
+            RETURN g.Name AS Genre, COLLECT({ appId: a.AppId, name: a.Name }) AS Apps";
+
+        var session = _driver.AsyncSession();
+        try
+        {
+            var result = await session.RunAsync(query);
+            await result.ForEachAsync(record =>
+            {
+                genresWithApps.Add(new GenreWithApps
+                {
+                    Genre = record["Genre"].As<string>(),
+                    Apps = record["Apps"].As<List<Dictionary<string, object>>>()
+                });
+            });
+        }
+        finally
+        {
+            await session.CloseAsync();
+        }
+
+        return genresWithApps;
+    }
+
+    public async Task<List<AppDTO>> GetAppsByGenreAsync(string genre)
+    {
+        var apps = new List<AppDTO>();
+
+        var query = @"
+            MATCH (a:App)-[:HAS_GENRE]->(g:Genre {Name: $genre})
+            RETURN a.AppId AS appId, a.Name AS name";
+
+        var session = _driver.AsyncSession();
+        try
+        {
+            var result = await session.RunAsync(query, new { genre });
+            await result.ForEachAsync(record =>
+            {
+                apps.Add(new AppDTO
+                {
+                    AppId = record["appId"].As<int>(),
+                    Name = record["name"].As<string>()
+                });
+            });
+        }
+        finally
+        {
+            await session.CloseAsync();
+        }
+
+        return apps;
+    }
 }

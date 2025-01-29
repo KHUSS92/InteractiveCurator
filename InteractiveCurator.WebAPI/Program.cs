@@ -6,6 +6,17 @@ var builder = WebApplication.CreateBuilder(args);
 // Add project-specific services and configurations
 builder.Services.AddProjectServices(builder.Configuration);
 
+//Enable CORS for React
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins("http://localhost:3000")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 // Add controllers
 builder.Services.AddControllers();
 
@@ -25,6 +36,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.UseCors();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();

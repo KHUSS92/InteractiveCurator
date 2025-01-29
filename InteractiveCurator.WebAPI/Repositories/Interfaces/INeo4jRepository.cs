@@ -6,5 +6,7 @@ namespace InteractiveCurator.WebAPI.Repositories
     {
         Task<bool> AppExistsAsync(int appId);
         Task AddAppAsync(Neo4jApp app);
+        Task<List<GenreWithApps>> GetAllGenresAsync();
+        Task<List<AppDTO>> GetAppsByGenreAsync(string genre);
     }
 }
